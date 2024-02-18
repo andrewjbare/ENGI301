@@ -57,6 +57,7 @@ Error conditions:
 # NOTE - Hint:  Look at  https://docs.python.org/3/library/operator.html
 import sys
 import operator
+from six.moves import input
 # ------------------------------------------------------------------------
 # Constants
 # ------------------------------------------------------------------------
@@ -75,7 +76,11 @@ operators = {
     "+": operator.add,
     "-": operator.sub,
     "*": operator.mul,
-    "/": operator.truediv
+    "/": operator.truediv,
+    ">>": operator.rshift,
+    "<<": operator.lshift,
+    "%": operator.mod,
+    "**": operator.pow
 }
 
 
@@ -89,10 +94,11 @@ def get_user_input():
         Returns tuple:  (number, number, function) or 
                         (None, None, None) if inputs invalid
     """
-    # NOTE - Use "try"/"except" statements to allow code to handle errors gracefully.      
+    # NOTE - Use "try"/"except" statements to allow code to handle errors gracefully.
+    # Attempt to bind input to raw_input for Python 2 compatibility
     try:
         # NOTE - Use "pass" statements to allow code to be run without having to 
-        # NOTE - fill out the contents.  This pass statement should be removed    
+        # NOTE - fill out the contents.  This pass statement should be removed
         number1 = float(input("Enter first number: "))
         number2 = float(input("Enter second number: "))
         op = input("Enter operation: ")
