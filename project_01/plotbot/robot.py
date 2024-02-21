@@ -79,12 +79,12 @@ class Robot:
         """Move distance arclength and end at an angle differing by angle"""
         pass
 
-    def dwell(self, P: int) -> None:
-        """Wait P milliseconds"""
+    def dwell(self, time_s: float) -> None:
+        """Wait time_s seconds"""
         pass
 
-    def bell(self, P: float) -> None:
-        """Sound the buzzer (default 1 second)"""
+    def bell(self, time_s: float) -> None:
+        """Sound the buzzer"""
         pass
 
     def retract(self) -> None:
@@ -95,12 +95,16 @@ class Robot:
         """Unretract (recover) the pen."""
         pass
 
-    def light(self, doLight: bool) -> None:
-        """Turn on (doLight = True) or off (doLight = False) the running
-        light."""
+    def lightOn(self) -> None:
+        """Turn light on"""
         pass
 
-# TODO: Replace with config file params
-left_stepper = Stepper([0, 1, 2, 3])
-right_stepper = Stepper([4, 5, 6, 7])
+    def lightOff(self) -> None:
+        """Turn light off"""
+        pass
+
+
+# TODO: Replace with config file params?
+left_stepper = Stepper(["P1_29", "P1_31", "P1_33", "P1_35"])
+right_stepper = Stepper(["P2_2", "P2_4", "P2_6", "P2_8"])
 robot = Robot(left_stepper, right_stepper)

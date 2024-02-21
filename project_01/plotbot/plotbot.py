@@ -36,10 +36,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 from robot import robot
 
 import sys
-import time
 import logging
-import threading
-from typing import Sequence
 
 VERSION = 0.1
 
@@ -127,6 +124,8 @@ class Parser:
         for line_number in range(len(self.gcode)):
             line = self.gcode[line_number]
             words = line.split()
+            # TODO: See how well this error handling works - might need
+            # improvement/pen testing for bad gcode files. Anticipate bugs here
             try: # Get the first word of the line and see if it's a valid command
                 command = self.commands[words[0]]
             except ValueError:
@@ -142,7 +141,9 @@ class Parser:
                 raise ParseError(
                     f"Incorrect number of arguments on line {line_number}: {line}"
                     )
-        return []
+            
+        command_sequence.extend(self.append)
+        return command_sequence
     
 class ProgramRunner:
     """Runs list of Gcode commands."""
