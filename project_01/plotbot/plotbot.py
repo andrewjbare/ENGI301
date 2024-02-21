@@ -135,12 +135,13 @@ class Parser:
                     ) from None
             try:
                 # Get the rest of the words on the line & see if they correspond
-                # to the command's arguments. Extra arguments are ignored.
+                # to the command's arguments. Extra arguments will throw an
+                # error, but in the future this should be handled behavior (ignored)
                 command_sequence.append(command(*words[1:]))
             except:
                 raise ParseError(
                     f"Incorrect number of arguments on line {line_number}: {line}"
-                    ) from None
+                    )
         return []
     
 class ProgramRunner:
@@ -178,6 +179,8 @@ if __name__ == "__main__":
             ProgramRunner(commands).execute()
     except FileNotFoundError:
         logging.error(f"File {filename} not found, exiting.")
+
+    logging.info("Exiting.")
     
     # Load file from command line argument or default to default.nc in the
     # local directory. If not found, exit.
