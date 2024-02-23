@@ -37,6 +37,7 @@ from robot import robot
 
 import sys
 import logging
+import math
 
 VERSION = 0.1
 
@@ -53,10 +54,15 @@ class Move(Command):
     def __init__(self, X: float, Y: float) -> None:
         self.X = X
         self.Y = Y
+        self.dX = X - robot.X
+        self.dY = Y - robot.Y
+        self.absolute_angle = math.degrees(math.atan(self.dY / self.dX))
+        self.distance = math.sqrt(self.dX ** 2 + self.dY ** 2)
 
     def execute(self) -> None:
         """Reorient & move the robot."""
-        pass
+        robot.reorient(self.absolute_angle)
+        robot.move(self.distance)
 
 class ControlledArcMove(Command):
     def __init__(self, X: float, Y: float, I: float, J: float) -> None:
@@ -65,9 +71,14 @@ class ControlledArcMove(Command):
         self.I = I
         self.J = J
 
+        self.dX = X - robot.X
+        self.dY = Y - robot.Y
+        self.absolute_angle = math.degrees(math.atan(self.dY / self.dX))
+
     def execute(self) -> None:
         """Reorient & arcmove the robot."""
-        pass
+        robot.reorient(self.absolute_angle)
+        
 
 class Dwell(Command):
     def __init__(self, P: int) -> None:

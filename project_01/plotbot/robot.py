@@ -1,10 +1,10 @@
 import Adafruit_BBIO.GPIO as GPIO
 
 class Stepper:
-    def __init__(self, pins: list[str]):
+    def __init__(self, pins: list[str], states: list[list[int]]):
         # TODO: Figure out what type pin numbers will be/how to access
         self.pins = pins
-        self.states: list[list[int]] = []
+        self.states: states
 
         # The current stepper state; "lead pin" is the first one energized on a step
         self.lead_pin = 0
@@ -33,38 +33,14 @@ class Stepper:
             self.lead_pin += 1
         else:
             self.lead_pin = 0
-
-
-class FullStepper(Stepper):
-    def __init__(self, pins):
-        super().__init__(pins)
-        self.states = [
-            [1, 1, 0, 0],
-            [0, 1, 1, 0],
-            [0, 0, 1, 1],
-            [1, 0, 0, 1]
-        ]
-
-class HalfStepper(Stepper):
-    def __init__(self, pins):
-        super().__init__(pins)
-        self.states = [
-            [1, 0, 0, 0],
-            [1, 1, 0, 0],
-            [0, 1, 0, 1],
-            [0, 1, 1, 0],
-            [0, 0, 1, 0],
-            [0, 0, 1, 1],
-            [0, 0, 0, 1],
-            [1, 0, 0, 1]
-        ]
         
 
 class Robot:
     """Robot contains all of the atomic implementations of robot actions that
     compose the commands defined in main."""
     def __init__(self, left_stepper: Stepper, right_stepper: Stepper) -> None:
-        self.position = [0, 0] # Position x, y [in]
+        self.X = 0
+        self.Y = 0
         self.orientation = 0 # Right-handed orientation [deg]
         self.left_stepper = left_stepper
         self.right_stepper = right_stepper
@@ -103,8 +79,18 @@ class Robot:
         """Turn light off"""
         pass
 
+stepper_states = [
+            [1, 0, 0, 0],
+            [1, 1, 0, 0],
+            [0, 1, 0, 1],
+            [0, 1, 1, 0],
+            [0, 0, 1, 0],
+            [0, 0, 1, 1],
+            [0, 0, 0, 1],
+            [1, 0, 0, 1]
+        ]
 
 # TODO: Replace with config file params?
-left_stepper = Stepper(["P1_29", "P1_31", "P1_33", "P1_35"])
-right_stepper = Stepper(["P2_2", "P2_4", "P2_6", "P2_8"])
+left_stepper = Stepper(["P1_29", "P1_31", "P1_33", "P1_35"], stepper_states)
+right_stepper = Stepper(["P2_2", "P2_4", "P2_6", "P2_8"], stepper_states)
 robot = Robot(left_stepper, right_stepper)
