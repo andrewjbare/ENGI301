@@ -38,6 +38,7 @@ from robot import robot
 import sys
 import logging
 import math
+import threading
 
 VERSION = 0.1
 
@@ -136,7 +137,7 @@ class Parser:
             line = self.gcode[line_number]
             words = line.split()
             # TODO: See how well this error handling works - might need
-            # improvement/pen testing for bad gcode files. Anticipate bugs here
+            # improvement/testing for bad gcode files. Anticipate bugs here
             try: # Get the first word of the line and see if it's a valid command
                 command = self.commands[words[0]]
             except ValueError:
@@ -160,14 +161,25 @@ class ProgramRunner:
     """Runs list of Gcode commands."""
     def __init__(self, commands: list[Command]):
         self.commands = commands
-        pass
+        self.estop = False
+        
 
     def execute(self) -> None:
         logging.info("Beginning program execution.")
         for command in self.commands:
+            if self.estop:
+                break
             command.execute()
             command.logExecution()
         logging.info("Program execution finished.")
+
+    def stop(self) -> None:
+        pass
+
+
+def button_poll(name):
+    logging.info("Beginning stop/start poll")
+    # GPIO in
     
 if __name__ == "__main__":
     logging.info(f"plotbot.py version {VERSION}")
@@ -188,17 +200,11 @@ if __name__ == "__main__":
             ]
             gcode = f.readlines()
             commands = Parser(gcode, prepend, append).parse()
+            # Wait for button press here
+            button_thread = threading.Thread(target=button_poll, args=(1,), daemon=True)
+            button_thread.start()
             ProgramRunner(commands).execute()
     except FileNotFoundError:
         logging.error(f"File {filename} not found, exiting.")
 
-    logging.info("Exiting.")
-    
-    # Load file from command line argument or default to default.nc in the
-    # local directory. If not found, exit.
-
-    # Get list of Commands from parser.
-
-    # Execute programrunner
-
-    # Exit
+    logging.info("Program execution finished, exiting.")

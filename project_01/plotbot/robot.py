@@ -1,5 +1,7 @@
 import Adafruit_BBIO.GPIO as GPIO
 
+import time
+
 class Stepper:
     def __init__(self, pins: list[str], states: list[list[int]]):
         # TODO: Figure out what type pin numbers will be/how to access
@@ -78,6 +80,7 @@ class Robot:
     def lightOff(self) -> None:
         """Turn light off"""
         pass
+
 
 stepper_states = [
             [1, 0, 0, 0],
