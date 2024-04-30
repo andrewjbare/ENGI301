@@ -1,4 +1,4 @@
-import Adafruit_BBIO.GPIO as GPIO
+# import Adafruit_BBIO.GPIO as GPIO
 
 import time
 
@@ -6,15 +6,16 @@ class Stepper:
     def __init__(self, pins: list[str], states: list[list[int]]):
         # TODO: Figure out what type pin numbers will be/how to access
         self.pins = pins
-        self.states: states
+        self.states = states
 
         # The current stepper state; "lead pin" is the first one energized on a step
         self.lead_pin = 0
 
         # Setup GPIO pins for output & set low
         for pin in self.pins:
-            GPIO.setup(pin, GPIO.OUT)
-            GPIO.output(pin, GPIO.LOW)
+            print("GPIO setup")
+            # GPIO.setup(pin, GPIO.OUT)
+            # GPIO.output(pin, GPIO.LOW)
 
     def write_pins(self, values: list[int]) -> None:
         """Write values to pins.
@@ -24,7 +25,8 @@ class Stepper:
         more concise."""
         for i in range(len(self.pins)):
             pin = self.pins[i]
-            GPIO.output(pin, GPIO.HIGH if values[i] else GPIO.LOW)
+            print("GPIO output")
+            # GPIO.output(pin, GPIO.HIGH if values[i] else GPIO.LOW)
 
     def step(self) -> None:
         """Perform one step."""
@@ -43,6 +45,7 @@ class Robot:
     def __init__(self, left_stepper: Stepper, right_stepper: Stepper) -> None:
         self.X = 0
         self.Y = 0
+        self.Z = 0
         self.orientation = 0 # Right-handed orientation [deg]
         self.left_stepper = left_stepper
         self.right_stepper = right_stepper
@@ -65,12 +68,8 @@ class Robot:
         """Sound the buzzer"""
         pass
 
-    def retract(self) -> None:
-        """Retract the pen."""
-        pass
-
-    def recover(self) -> None:
-        """Unretract (recover) the pen."""
+    def zmove(self, distance) -> None:
+        """Move the pen (Z)"""
         pass
 
     def lightOn(self) -> None:
