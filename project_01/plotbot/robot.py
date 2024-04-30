@@ -26,7 +26,7 @@ class Stepper:
         for i in range(len(self.pins)):
             pin = self.pins[i]
             print("GPIO output")
-            # GPIO.output(pin, GPIO.HIGH if values[i] else GPIO.LOW)
+            GPIO.output(pin, GPIO.HIGH if values[i] else GPIO.LOW)
 
     def step(self):
         """Perform one step."""
@@ -54,9 +54,9 @@ class Robot:
         pass
 
     def move(self, distance):
-        for i in range(1,100):
-            self.left_stepper.step()
-            self.right_stepper.step()
+        #for i in range(1,100):
+        self.left_stepper.step()
+        self.right_stepper.step()
 
     def arcmove(self, distance, angle) -> None:
         """Move distance arclength and end at an angle differing by angle"""
