@@ -89,7 +89,7 @@ class Lexer:
                 break
 
 class Command:
-    def __init__(self, args: dict[str, int]):
+    def __init__(self, args):
         self.args = args
 
     def __str__(self):
@@ -223,7 +223,7 @@ class Parser:
                 print("parse finished")
                 return self.program
             
-def parse(filename) -> list[Command]:
+def parse(filename):
 
     with open(filename, "r") as f:
         gcode = "".join(f.readlines())
