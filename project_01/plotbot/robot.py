@@ -3,7 +3,7 @@
 import time
 
 class Stepper:
-    def __init__(self, pins: list[str], states: list[list[int]]):
+    def __init__(self, pins, states):
         # TODO: Figure out what type pin numbers will be/how to access
         self.pins = pins
         self.states = states
@@ -17,7 +17,7 @@ class Stepper:
             # GPIO.setup(pin, GPIO.OUT)
             # GPIO.output(pin, GPIO.LOW)
 
-    def write_pins(self, values: list[int]) -> None:
+    def write_pins(self, values):
         """Write values to pins.
         
         If values is the wrong length, a ValueError should be thrown
@@ -28,7 +28,7 @@ class Stepper:
             print("GPIO output")
             # GPIO.output(pin, GPIO.HIGH if values[i] else GPIO.LOW)
 
-    def step(self) -> None:
+    def step(self):
         """Perform one step."""
         self.write_pins(self.states[self.lead_pin])
         # Increment lead pin so the next run steps to the next state. If we've
@@ -42,7 +42,7 @@ class Stepper:
 class Robot:
     """Robot contains all of the atomic implementations of robot actions that
     compose the commands defined in main."""
-    def __init__(self, left_stepper: Stepper, right_stepper: Stepper) -> None:
+    def __init__(self, left_stepper, right_stepper):
         self.X = 0
         self.Y = 0
         self.Z = 0
@@ -50,21 +50,21 @@ class Robot:
         self.left_stepper = left_stepper
         self.right_stepper = right_stepper
 
-    def reorient(self, absolute_angle: float) -> None:
+    def reorient(self, absolute_angle):
         pass
 
-    def move(self, distance: float):
+    def move(self, distance):
         pass
 
-    def arcmove(self, distance: float, angle: float) -> None:
+    def arcmove(self, distance, angle) -> None:
         """Move distance arclength and end at an angle differing by angle"""
         pass
 
-    def dwell(self, time_s: float) -> None:
+    def dwell(self, time_s) -> None:
         """Wait time_s seconds"""
         pass
 
-    def bell(self, time_s: float) -> None:
+    def bell(self, time_s) -> None:
         """Sound the buzzer"""
         pass
 
