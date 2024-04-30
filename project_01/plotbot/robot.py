@@ -1,4 +1,4 @@
-# import Adafruit_BBIO.GPIO as GPIO
+import Adafruit_BBIO.GPIO as GPIO
 
 import time
 
@@ -13,9 +13,9 @@ class Stepper:
 
         # Setup GPIO pins for output & set low
         for pin in self.pins:
-            print("GPIO setup")
-            # GPIO.setup(pin, GPIO.OUT)
-            # GPIO.output(pin, GPIO.LOW)
+            print(f"GPIO setup {pin}")
+            GPIO.setup(pin, GPIO.OUT)
+            GPIO.output(pin, GPIO.LOW)
 
     def write_pins(self, values):
         """Write values to pins.
@@ -54,7 +54,9 @@ class Robot:
         pass
 
     def move(self, distance):
-        pass
+        for i in range(1,100):
+            self.left_stepper.step()
+            self.right_stepper.step()
 
     def arcmove(self, distance, angle) -> None:
         """Move distance arclength and end at an angle differing by angle"""
@@ -94,5 +96,5 @@ stepper_states = [
 
 # TODO: Replace with config file params?
 left_stepper = Stepper(["P1_29", "P1_31", "P1_33", "P1_35"], stepper_states)
-right_stepper = Stepper(["P2_2", "P2_4", "P2_6", "P2_8"], stepper_states)
+right_stepper = Stepper(["P1_30", "P1_32", "P1_34", "P1_36"], stepper_states)
 robot = Robot(left_stepper, right_stepper)
